@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { marketingConfig } from "../config/marketing";
 defineProps({
   heading: String,
   text: String
@@ -7,21 +6,11 @@ defineProps({
 </script>
 
 <template>
-  <header className="container z-40 bg-background">
-    <div className="flex h-20 items-center justify-between py-6">
-      <AppNav :items="marketingConfig.mainNav" />
-      <nav>
-        login
-        <!--<Link
-              href="/login"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4"
-              )}
-            >
-              Login
-            </Link>-->
-      </nav>
+  <div class="flex items-center justify-between px-2">
+    <div class="grid gap-1">
+      <h1 class="font-heading text-3xl md:text-4xl">{{ heading }}</h1>
+      <p v-if="text" p class="text-lg text-muted-foreground">{{ text }}</p>
     </div>
-  </header>
+    <slot />
+  </div>
 </template>

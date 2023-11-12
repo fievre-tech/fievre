@@ -5,38 +5,24 @@ defineProps({
   items: Array<MainNavItem>
 });
 
-const showMobileMenu = ref(false);
+const { path } = useRoute();
 </script>
 
 <template>
-  <div class="flex gap-6 md:gap-10">
-    <nuxt-link to="/" class="hidden items-center space-x-2 md:flex">
-      <!--<Icons.logo />-->logo
-      <span class="hidden font-bold sm:inline-block"> fievre </span>
-    </nuxt-link>
-    <nav v-if="items && items.length" class="hidden gap-6 md:flex">
-      <nuxt-link
-        v-for="(item, index) in items"
-        :key="index"
-        :to="item.disabled ? '#' : item.href"
-        :class="[
-          'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
-          'text-foreground',
-          item.disabled ? 'cursor-not-allowed opacity-80' : ''
-        ]"
+  <nav class="grid items-start gap-2">
+    <NuxtLink v-for="(item, index) in items" :key="index" :to="item.disabled ? '/' : item.href">
+      <span
+        class="group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+        :class="{
+          'bg-accent': path === item.href,
+          transparent: path !== item.href,
+          'cursor-not-allowed opacity-80': item.disabled
+        }"
       >
-        {{ item.title }}
-      </nuxt-link>
-    </nav>
-    <button class="flex items-center space-x-2 md:hidden" @click="showMobileMenu = !showMobileMenu">
-      <!--<Icons.logo v-if="!showMobileMenu" />
-      <Icons.close v-else />-->
-      <span class="font-bold">Menu</span>
-    </button>
-    <MobileNav v-if="showMobileMenu && items" :items="items">
-      <slot></slot>
-    </MobileNav>
-  </div>
+        <span>{{ item.title }}</span>
+      </span>
+    </NuxtLink>
+  </nav>
 </template>
 
 <style scoped>
