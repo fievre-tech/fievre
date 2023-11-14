@@ -13,9 +13,5 @@ export default defineAppConfig({
       url: "https://shadcn.com"
     }
   ],
-  creator: "xieyezi",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" }
-  ]
+  creator: "xieyezi"
 });

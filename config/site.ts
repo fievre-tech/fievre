@@ -1,13 +1,11 @@
-import { type SiteConfig } from "../types"
+import { type SiteConfig } from "../types";
 
 export const siteConfig: SiteConfig = {
-  name: "Taxonomy",
-  description:
-    "An open source application built using the new router, server components and everything new in Next.js 13.",
-  url: "https://tx.shadcn.com",
-  ogImage: "https://tx.shadcn.com/og.jpg",
+  name: "Fievre",
+  description: "A company with a warm and friendly atmosphere. We are a team of passionate developers who love to create and share.",
+  url: "https://github.com/fievre-tech",
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/taxonomy",
-  },
-}
+    twitter: "https://twitter.com/xieyezi438328",
+    github: "https://github.com/fievre-tech"
+  }
+};

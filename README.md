@@ -73,3 +73,15 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+```
+√ Would you like to use TypeScript (recommended)? ... no / yes
+√ Which framework are you using? » Nuxt
+√ Which style would you like to use? » Default
+√ Which color would you like to use as base color? » Zinc
+√ Where is your Tailwind CSS file? ... assets/css/tailwind.css
+√ Would you like to use CSS variables for colors? ... no / yes
+√ Where is your tailwind.config located? ... tailwind.config.js
+√ Configure the import alias for components: ... @/components
+√ Configure the import alias for utils: ... @/lib/utils
+```
