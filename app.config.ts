@@ -13,5 +13,9 @@ export default defineAppConfig({
       url: "https://shadcn.com"
     }
   ],
-  creator: "xieyezi"
+  creator: "xieyezi",
+  nuxtIcon: {
+    size: "22px",
+    class: "icon"
+  }
 });
