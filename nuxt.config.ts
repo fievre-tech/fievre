@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true
   },
-  modules: ["@nuxtjs/tailwindcss", "@vueuse/nuxt", "nuxt-icon"],
+  modules: ["@nuxtjs/tailwindcss", "@vueuse/nuxt", "nuxt-icon", "@nuxtjs/i18n"],
   hooks: {
     "components:dirs": (dirs) => {
       dirs.unshift({
@@ -18,6 +18,24 @@ export default defineNuxtConfig({
         prefix: "Ui",
         pathPrefix: false
       });
+    }
+  },
+  i18n: {
+    vueI18n: "./i18n.config.ts",
+    locales: [
+      {
+        code: "en",
+        name: "English"
+      },
+      {
+        code: "fr",
+        name: "Français"
+      }
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root" // recommended
     }
   }
 });

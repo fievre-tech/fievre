@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { useTheme } from "@/composables";
-import { marketingConfig } from "../config";
+
+interface LocaleObject {
+  code: string;
+  name: string;
+}
 
 const scrollTop = ref(0);
+const { t, locale, locales } = useI18n();
 const { isDark, toggleTheme } = useTheme();
+const switchLocalePath = useSwitchLocalePath();
 
+const currentLocale = computed(() => locales.value.find((l: any) => l.code === locale.value)) as unknown as LocaleObject;
+const availableLocales = computed(() => locales.value.map((l) => l)) as unknown as LocaleObject[];
 const headerClass = computed(() => {
   if (scrollTop.value > 60) {
     return `fixed top-4 right-4`;
@@ -22,33 +30,75 @@ onMounted(() => {
   <div class="bg-background text-foreground flex min-h-screen flex-col">
     <header class="container z-40 bg-background text-foreground">
       <div class="flex h-20 items-center justify-between py-6">
-        <AppNav :items="marketingConfig.mainNav" />
-        <Icon
-          v-if="isDark"
-          name="i-ic:baseline-dark-mode"
-          :class="['cursor-pointer hover:cursor-pointer transform hover:scale-110 transition duration-300', headerClass]"
-          size="22"
-          @click="toggleTheme(false)"
-        />
-        <Icon
-          v-else
-          name="i-material-symbols:wb-sunny-outline"
-          :class="['cursor-pointer hover:cursor-pointer transform hover:scale-110 transition duration-300', headerClass]"
-          size="22"
-          @click="toggleTheme(true)"
-        />
+        <AppNav />
+        <div class="flex flex-row items-center">
+          <div>
+            <Icon
+              v-if="isDark"
+              name="i-ic:baseline-dark-mode"
+              :class="['cursor-pointer hover:cursor-pointer transform hover:scale-110 transition duration-300', headerClass]"
+              size="22"
+              @click="toggleTheme(false)"
+            />
+            <Icon
+              v-else
+              name="i-material-symbols:wb-sunny-outline"
+              :class="['cursor-pointer hover:cursor-pointer transform hover:scale-110 transition duration-300', headerClass]"
+              size="22"
+              @click="toggleTheme(true)"
+            />
+          </div>
+          <div class="ml-4">
+            <UiSelect>
+              <UiSelectTrigger>
+                <UiSelectValue :placeholder="currentLocale.name" />
+              </UiSelectTrigger>
+              <UiSelectContent>
+                <UiSelectGroup>
+                  <UiSelectLabel>{{ t("home.nav.language") }}</UiSelectLabel>
+                  <UiSelectItem v-for="l in availableLocales" :key="l.code" :value="l.code">
+                    <NuxtLink :to="switchLocalePath(l.code)">{{ l.name }}</NuxtLink>
+                  </UiSelectItem>
+                </UiSelectGroup>
+              </UiSelectContent>
+            </UiSelect>
+          </div>
+        </div>
       </div>
     </header>
     <main class="flex-1">
       <section class="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
         <div class="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-          <a class="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium" target="_blank" href="https://twitter.com/xieyezi438328"
-            >Follow us on Twitter</a
-          >
-          <h1 class="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">Enterprise Sass service</h1>
+          <a class="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium" target="_blank" href="https://twitter.com/xieyezi438328">{{
+            t("home.content.twitter")
+          }}</a>
+          <h1 class="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+            {{ t("home.content.slogonHead") }} <s class="font-normal opacity-50">{{ t("home.content.slogonMonth") }}</s>
+            {{ t("home.content.slogonDays") }}
+          </h1>
           <p class="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            We specialize in assisting businesses to rapidly establish efficient Sass services.
+            {{ t("home.content.intro") }}
           </p>
+        </div>
+      </section>
+
+      <section class="space-y-6 mb-10">
+        <div class="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+          <a href="#_" class="relative inline-block text-lg group">
+            <span
+              class="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white"
+            >
+              <span class="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
+              <span
+                class="absolute left-0 w-64 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"
+              ></span>
+              <span class="relative">{{ t("home.content.start") }}</span>
+            </span>
+            <span
+              class="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-background rounded-lg group-hover:mb-0 group-hover:mr-0"
+              data-rounded="rounded-lg"
+            ></span>
+          </a>
         </div>
       </section>
 
@@ -68,14 +118,14 @@ onMounted(() => {
             data-immersive-translate-effect="1"
             data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
           >
-            Features
+            {{ t("home.content.feature") }}
           </h2>
           <p
             class="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7"
             data-immersive-translate-effect="1"
             data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
           >
-            We use the most advanced technology available to help businesses implement Sass services.
+            {{ t("home.content.technology") }}
           </p>
         </div>
         <div
@@ -334,18 +384,16 @@ onMounted(() => {
             data-immersive-translate-effect="1"
             data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
           >
-            We can also help businesses quickly build content platforms.
+            {{ t("home.content.platform") }}
           </p>
         </div>
       </section>
 
       <section id="open-source" class="container py-8 md:py-12 lg:py-24">
         <div class="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
-          <h2 class="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Proudly Sass</h2>
+          <h2 class="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">{{ t("home.content.proudly") }}</h2>
           <p class="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            We specialize in assisting businesses in rapidly setting up efficient Sass services, enhancing style management efficiency. We offer
-            high-performance and scalable solutions, accelerating development speed and improving team productivity. Let us help you achieve
-            exceptional user experiences. <br />
+            {{ t("home.content.explian") }}<br />
             <a target="_blank" rel="noreferrer" class="underline underline-offset-4" href="https://github.com/fievre-tech">our GitHub</a>
           </p>
         </div>

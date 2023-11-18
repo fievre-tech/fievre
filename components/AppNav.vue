@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import type { MainNavItem } from "@/types";
-
+import type { NavItem } from "@/types";
 import { siteConfig } from "~/config";
 
-defineProps({
-  items: Array<MainNavItem>
-});
+
+const { t, locale } = useI18n();
+
+const navs: NavItem[] = [
+  {
+    title: t("home.nav.feature"),
+    href: `/${locale.value}`
+  },
+  {
+    title: t("home.nav.about"),
+    href: `/${locale.value}/about`
+  }
+];
+
 const showMobileMenu = ref(false);
 
 const toggleMobileMenu = () => {
@@ -19,9 +29,9 @@ const toggleMobileMenu = () => {
       <Icon name="i-mynaui:click" size="24" />
       <span class="hidden font-bold sm:inline-block"> {{ siteConfig.name }} </span>
     </NuxtLink>
-    <nav v-if="items" class="hidden gap-6 md:flex">
+    <nav v-if="navs" class="hidden gap-6 md:flex">
       <NuxtLink
-        v-for="(item, index) in items"
+        v-for="(item, index) in navs"
         :key="index"
         :href="item.disabled ? '#' : item.href"
         :class="[
@@ -32,7 +42,10 @@ const toggleMobileMenu = () => {
       >
         {{ item.title }}
       </NuxtLink>
+
+      <!--<NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">{{ locale.name }}</NuxtLink>-->
     </nav>
+
     <button class="flex items-center space-x-2 md:hidden" @click="toggleMobileMenu">
       <template v-if="showMobileMenu">
         <Icons name="i-carbon:close-outline" />
