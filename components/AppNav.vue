@@ -2,7 +2,6 @@
 import type { NavItem } from "@/types";
 import { siteConfig } from "~/config";
 
-
 const { t, locale } = useI18n();
 
 const navs: NavItem[] = [
@@ -13,6 +12,10 @@ const navs: NavItem[] = [
   {
     title: t("home.nav.about"),
     href: `/${locale.value}/about`
+  },
+  {
+    title: t("home.nav.example"),
+    href: `/${locale.value}/example`
   }
 ];
 
@@ -25,8 +28,8 @@ const toggleMobileMenu = () => {
 
 <template>
   <div class="flex gap-6 md:gap-10">
-    <NuxtLink href="/" class="hidden items-center space-x-2 md:flex">
-      <Icon name="i-mynaui:click" size="24" />
+    <NuxtLink href="#" class="hidden items-center space-x-2 md:flex">
+      <Icon name="i-solar:fire-line-duotone" size="24" />
       <span class="hidden font-bold sm:inline-block"> {{ siteConfig.name }} </span>
     </NuxtLink>
     <nav v-if="navs" class="hidden gap-6 md:flex">

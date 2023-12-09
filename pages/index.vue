@@ -7,17 +7,23 @@ interface LocaleObject {
 }
 
 const scrollTop = ref(0);
-const { t, locale, locales } = useI18n();
+const { t, locale, locales, setLocale } = useI18n();
 const { isDark, toggleTheme } = useTheme();
-const switchLocalePath = useSwitchLocalePath();
 
-const currentLocale = computed(() => locales.value.find((l: any) => l.code === locale.value)) as unknown as LocaleObject;
-const availableLocales = computed(() => locales.value.map((l) => l)) as unknown as LocaleObject[];
+const availableLocales = locales.value.map((l) => l) as LocaleObject[];
+const localeName = computed(() => {
+  const localeObject = (locales.value as LocaleObject[]).find((l: LocaleObject) => l.code === locale.value);
+  return localeObject ? localeObject.name : "";
+});
 const headerClass = computed(() => {
   if (scrollTop.value > 60) {
     return `fixed top-4 right-4`;
   }
 });
+
+function changeLocale(locale: string) {
+  setLocale(locale);
+}
 
 onMounted(() => {
   window.addEventListener("scroll", () => {
@@ -49,15 +55,15 @@ onMounted(() => {
             />
           </div>
           <div class="ml-4">
-            <UiSelect>
+            <UiSelect @update:model-value="changeLocale">
               <UiSelectTrigger>
-                <UiSelectValue :placeholder="currentLocale.name" />
+                <UiSelectValue :placeholder="localeName" />
               </UiSelectTrigger>
               <UiSelectContent>
                 <UiSelectGroup>
                   <UiSelectLabel>{{ t("home.nav.language") }}</UiSelectLabel>
                   <UiSelectItem v-for="l in availableLocales" :key="l.code" :value="l.code">
-                    <NuxtLink :to="switchLocalePath(l.code)">{{ l.name }}</NuxtLink>
+                    {{ l.name }}
                   </UiSelectItem>
                 </UiSelectGroup>
               </UiSelectContent>
@@ -143,42 +149,6 @@ onMounted(() => {
               data-immersive-translate-effect="1"
               data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
             >
-              <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                <path
-                  fill="#ffffff"
-                  d="M13.464 19.83h8.922c.283 0 .562-.073.807-.21a1.59 1.59 0 0 0 .591-.574a1.53 1.53 0 0 0 .216-.783a1.529 1.529 0 0 0-.217-.782L17.792 7.414a1.59 1.59 0 0 0-.591-.573a1.652 1.652 0 0 0-.807-.21c-.283 0-.562.073-.807.21a1.59 1.59 0 0 0-.59.573L13.463 9.99L10.47 4.953a1.591 1.591 0 0 0-.591-.573a1.653 1.653 0 0 0-.807-.21c-.284 0-.562.073-.807.21a1.591 1.591 0 0 0-.591.573L.216 17.481a1.53 1.53 0 0 0-.217.782c0 .275.074.545.216.783a1.59 1.59 0 0 0 .59.574c.246.137.525.21.808.21h5.6c2.22 0 3.856-.946 4.982-2.79l2.733-4.593l1.464-2.457l4.395 7.382h-5.859Zm-6.341-2.46l-3.908-.002l5.858-9.842l2.923 4.921l-1.957 3.29c-.748 1.196-1.597 1.632-2.916 1.632z"
-                />
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                <path
-                  fill="#000000"
-                  d="M13.464 19.83h8.922c.283 0 .562-.073.807-.21a1.59 1.59 0 0 0 .591-.574a1.53 1.53 0 0 0 .216-.783a1.529 1.529 0 0 0-.217-.782L17.792 7.414a1.59 1.59 0 0 0-.591-.573a1.652 1.652 0 0 0-.807-.21c-.283 0-.562.073-.807.21a1.59 1.59 0 0 0-.59.573L13.463 9.99L10.47 4.953a1.591 1.591 0 0 0-.591-.573a1.653 1.653 0 0 0-.807-.21c-.284 0-.562.073-.807.21a1.591 1.591 0 0 0-.591.573L.216 17.481a1.53 1.53 0 0 0-.217.782c0 .275.074.545.216.783a1.59 1.59 0 0 0 .59.574c.246.137.525.21.808.21h5.6c2.22 0 3.856-.946 4.982-2.79l2.733-4.593l1.464-2.457l4.395 7.382h-5.859Zm-6.341-2.46l-3.908-.002l5.858-9.842l2.923 4.921l-1.957 3.29c-.748 1.196-1.597 1.632-2.916 1.632z"
-                />
-              </svg>
-              <div class="space-y-2" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
-                <h3 class="font-bold" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
-                  Nuxt3
-                </h3>
-                <p
-                  class="text-sm text-muted-foreground"
-                  data-immersive-translate-effect="1"
-                  data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
-                >
-                  App dir, Routing, Layouts, Loading UI and API routes.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            class="relative overflow-hidden rounded-lg border bg-background p-2"
-            data-immersive-translate-effect="1"
-            data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
-          >
-            <div
-              class="flex h-[180px] flex-col justify-between rounded-md p-6"
-              data-immersive-translate-effect="1"
-              data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
-            >
               <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
                 <path
                   fill="#ffffff"
@@ -195,8 +165,45 @@ onMounted(() => {
                 <h3 class="font-bold" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
                   Vue3
                 </h3>
-                <p class="text-sm" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
+                <p
+                  class="text-sm text-muted-foreground"
+                  data-immersive-translate-effect="1"
+                  data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
+                >
                   Server and Client Components. Use hook.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="relative overflow-hidden rounded-lg border bg-background p-2"
+            data-immersive-translate-effect="1"
+            data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
+          >
+            <div
+              class="flex h-[180px] flex-col justify-between rounded-md p-6"
+              data-immersive-translate-effect="1"
+              data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
+            >
+              <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path
+                  fill="#ffffff"
+                  d="M13.464 19.83h8.922c.283 0 .562-.073.807-.21a1.59 1.59 0 0 0 .591-.574a1.53 1.53 0 0 0 .216-.783a1.529 1.529 0 0 0-.217-.782L17.792 7.414a1.59 1.59 0 0 0-.591-.573a1.652 1.652 0 0 0-.807-.21c-.283 0-.562.073-.807.21a1.59 1.59 0 0 0-.59.573L13.463 9.99L10.47 4.953a1.591 1.591 0 0 0-.591-.573a1.653 1.653 0 0 0-.807-.21c-.284 0-.562.073-.807.21a1.591 1.591 0 0 0-.591.573L.216 17.481a1.53 1.53 0 0 0-.217.782c0 .275.074.545.216.783a1.59 1.59 0 0 0 .59.574c.246.137.525.21.808.21h5.6c2.22 0 3.856-.946 4.982-2.79l2.733-4.593l1.464-2.457l4.395 7.382h-5.859Zm-6.341-2.46l-3.908-.002l5.858-9.842l2.923 4.921l-1.957 3.29c-.748 1.196-1.597 1.632-2.916 1.632z"
+                />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path
+                  fill="#000000"
+                  d="M13.464 19.83h8.922c.283 0 .562-.073.807-.21a1.59 1.59 0 0 0 .591-.574a1.53 1.53 0 0 0 .216-.783a1.529 1.529 0 0 0-.217-.782L17.792 7.414a1.59 1.59 0 0 0-.591-.573a1.652 1.652 0 0 0-.807-.21c-.283 0-.562.073-.807.21a1.59 1.59 0 0 0-.59.573L13.463 9.99L10.47 4.953a1.591 1.591 0 0 0-.591-.573a1.653 1.653 0 0 0-.807-.21c-.284 0-.562.073-.807.21a1.591 1.591 0 0 0-.591.573L.216 17.481a1.53 1.53 0 0 0-.217.782c0 .275.074.545.216.783a1.59 1.59 0 0 0 .59.574c.246.137.525.21.808.21h5.6c2.22 0 3.856-.946 4.982-2.79l2.733-4.593l1.464-2.457l4.395 7.382h-5.859Zm-6.341-2.46l-3.908-.002l5.858-9.842l2.923 4.921l-1.957 3.29c-.748 1.196-1.597 1.632-2.916 1.632z"
+                />
+              </svg>
+
+              <div class="space-y-2" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
+                <h3 class="font-bold" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
+                  Nuxt3
+                </h3>
+                <p class="text-sm" data-immersive-translate-effect="1" data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459">
+                  App dir, Routing, Layouts, Loading UI and API routes.
                 </p>
               </div>
             </div>
@@ -232,7 +239,7 @@ onMounted(() => {
                   data-immersive-translate-effect="1"
                   data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
                 >
-                  ORM using Prisma and deployed on PlanetScale.
+                  Manage Your Content. Anywhere.
                 </p>
               </div>
             </div>
@@ -276,7 +283,7 @@ onMounted(() => {
                   data-immersive-translate-effect="1"
                   data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
                 >
-                  UI components built using Radix UI and styled with Tailwind CSS.
+                  UI components built using Shadcn UI and styled with Tailwind CSS.
                 </p>
               </div>
             </div>
@@ -322,7 +329,7 @@ onMounted(() => {
                   data-immersive-translate-effect="1"
                   data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
                 >
-                  Authentication using NextAuth.js and middlewares.
+                  Authentication using NuxtAuth.js and middlewares.
                 </p>
               </div>
             </div>
@@ -368,7 +375,7 @@ onMounted(() => {
                   data-immersive-translate-effect="1"
                   data-immersive_translate_walked="b145443c-71de-455c-be20-ae457ea3e459"
                 >
-                  Free and paid subscriptions using Stripe.
+                  Excellent SEO Services.
                 </p>
               </div>
             </div>

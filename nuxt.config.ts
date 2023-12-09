@@ -28,8 +28,28 @@ export default defineNuxtConfig({
         name: "English"
       },
       {
+        code: "zh",
+        name: "简体中文"
+      },
+      {
+        code: "zh_tw",
+        name: "繁體中文"
+      },
+      {
         code: "fr",
         name: "Français"
+      },
+      {
+        code: "es",
+        name: "Español"
+      },
+      {
+        code: "ja",
+        name: "にほんご"
+      },
+      {
+        code: "ko",
+        name: "한국어"
       }
     ],
     detectBrowserLanguage: {
